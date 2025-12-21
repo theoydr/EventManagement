@@ -175,7 +175,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Handles business logic errors related to event bookings (e.g., eventmanagement a full event).
+     * Handles business logic errors related to event bookings (e.g., booking a full event).
      *
      * @param ex The EventBookingException that was thrown.
      * @return A ResponseEntity with a 400 Bad Request status and a clear error message.

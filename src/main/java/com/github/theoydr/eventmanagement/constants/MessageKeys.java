@@ -2,7 +2,6 @@ package com.github.theoydr.eventmanagement.constants;
 
 public final class MessageKeys {
 
-    /** Private constructor to prevent instantiation of this utility class. */
     private MessageKeys() {}
 
     public static final class UserMessages {
@@ -44,13 +43,13 @@ public final class MessageKeys {
 
     public static final class BookingMessages {
         private BookingMessages() {}
-        public static final String USER_ID_REQUIRED = "{eventmanagement.validation.userid.required}";
-        public static final String EVENT_ID_REQUIRED = "{eventmanagement.validation.eventid.required}";
-        public static final String TICKETS_NOT_ZERO = "{eventmanagement.validation.tickets.notZero}";
-        public static final String TICKETS_MIN = "{eventmanagement.validation.tickets.min}";
-        public static final String BOOKING_EXISTS = "{eventmanagement.exception.bookingExists}";
-        public static final String BOOKING_NOT_FOUND = "{eventmanagement.exception.notFound}";
-        public static final String BOOKING_NOT_FUTURE = "{eventmanagement.validation.bookingDate.notFuture}";
+        public static final String USER_ID_REQUIRED = "{booking.validation.userid.required}";
+        public static final String EVENT_ID_REQUIRED = "{booking.validation.eventid.required}";
+        public static final String TICKETS_NOT_ZERO = "{booking.validation.tickets.notZero}";
+        public static final String TICKETS_MIN = "{booking.validation.tickets.min}";
+        public static final String BOOKING_EXISTS = "{booking.exception.bookingExists}";
+        public static final String BOOKING_NOT_FOUND = "{booking.exception.notFound}";
+        public static final String BOOKING_NOT_FUTURE = "{booking.validation.bookingDate.notFuture}";
     }
 
     public static final class CommonMessages {

@@ -39,7 +39,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking createBooking(Long userId, Long eventId, Integer numberOfTickets) {
-        log.debug("Attempting to create eventmanagement for User ID: {} on Event ID: {}", userId, eventId);
+        log.debug("Attempting to create booking for User ID: {} on Event ID: {}", userId, eventId);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("user", "id", userId));
@@ -78,11 +78,11 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void cancelBooking(Long bookingId) {
-        log.debug("Attempting to cancel eventmanagement with ID: {}", bookingId);
+        log.debug("Attempting to cancel booking with ID: {}", bookingId);
 
 
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("eventmanagement", "id", bookingId));
+                .orElseThrow(() -> new ResourceNotFoundException("booking", "id", bookingId));
 
         booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
@@ -93,7 +93,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Booking> findBookingById(Long bookingId) {
-        log.debug("Fetching eventmanagement by ID: {}", bookingId);
+        log.debug("Fetching booking by ID: {}", bookingId);
         return bookingRepository.findById(bookingId);
     }
 

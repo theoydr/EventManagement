@@ -10,39 +10,39 @@ import java.util.Optional;
 
 /**
  * Service interface for managing bookings.
- * Defines the contract for eventmanagement-related business operations.
+ * Defines the contract for booking-related business operations.
  */
 public interface BookingService {
 
 
 
     /**
-     * Creates a new eventmanagement for a user for a specific event.
+     * Creates a new booking for a user for a specific event.
      *
-     * @param userId The ID of the user making the eventmanagement.
+     * @param userId The ID of the user making the booking.
      * @param eventId The ID of the event being booked.
      * @param numberOfTickets The number of tickets to book.
      * @return The newly created and persisted Booking entity.
      * @throws ResourceNotFoundException if the user or event is not found.
-     * @throws EventBookingException if the eventmanagement violates any business rules (e.g., event not published, sold out).
+     * @throws EventBookingException if the booking violates any business rules (e.g., event not published, sold out).
      */
     Booking createBooking(Long userId, Long eventId, Integer numberOfTickets);
 
 
     /**
-     * Cancels a eventmanagement by changing its status.
+     * Cancels a booking by changing its status.
      *
-     * @param bookingId The ID of the eventmanagement to cancel.
-     * @throws ResourceNotFoundException if no eventmanagement is found with the given ID.
+     * @param bookingId The ID of the booking to cancel.
+     * @throws ResourceNotFoundException if no booking is found with the given ID.
      */
     void cancelBooking(Long bookingId);
 
 
     /**
-     * Finds a eventmanagement by its unique ID.
+     * Finds a booking by its unique ID.
      *
-     * @param bookingId The ID of the eventmanagement to find.
-     * @return an {@link Optional} containing the found eventmanagement, or {@link Optional#empty()} if no eventmanagement is found.
+     * @param bookingId The ID of the booking to find.
+     * @return an {@link Optional} containing the found booking, or {@link Optional#empty()} if no booking is found.
      */
     Optional<Booking> findBookingById(Long bookingId);
 

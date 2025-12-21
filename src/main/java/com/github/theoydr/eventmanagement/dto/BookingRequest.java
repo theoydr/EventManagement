@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 
 /**
- * Represents the data required to create a new eventmanagement.
+ * Represents the data required to create a new booking.
  * This record is a wrapper for the @RequestBody in the BookingController.
  */
 public record BookingRequest(

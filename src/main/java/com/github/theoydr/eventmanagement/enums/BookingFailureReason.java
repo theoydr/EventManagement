@@ -10,7 +10,7 @@ public enum BookingFailureReason {
     /** The requested number of tickets exceeds the remaining capacity of the event. */
     INSUFFICIENT_CAPACITY,
 
-    /** The user has already made a eventmanagement for this event. */
+    /** The user has already made a booking for this event. */
     USER_ALREADY_BOOKED,
 
 

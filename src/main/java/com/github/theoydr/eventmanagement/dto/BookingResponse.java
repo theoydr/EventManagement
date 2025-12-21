@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 
 /**
- * Represents the publicly visible data for a eventmanagement.
+ * Represents the publicly visible data for a booking.
  * It includes nested DTOs for the associated user and event.
  */
 public record BookingResponse(
