@@ -6,8 +6,6 @@ import com.github.theoydr.eventmanagement.enums.BookingStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.PastOrPresent;
-import org.hibernate.annotations.Check;
-import org.hibernate.annotations.Checks;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -15,13 +13,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "bookings", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "event_id"}, name = "unique_user_event_booking")
+}, check = {
+        @CheckConstraint(constraint = "number_of_tickets > 0", name = "booking_tickets_positive_check"),
+        @CheckConstraint(constraint = "booking_date_time <= CURRENT_TIMESTAMP", name = "booking_date_in_past_check")
 })
-@Checks({
-        @Check(constraints = "number_of_tickets > 0", name = "booking_tickets_positive_check"),
-        @Check(constraints = "booking_date_time <= CURRENT_TIMESTAMP", name = "booking_date_in_past_check")
-})public class Booking {
-
-
+public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

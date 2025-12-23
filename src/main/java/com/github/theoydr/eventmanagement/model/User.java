@@ -12,8 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
-@Check(constraints = "TRIM(username) <> ''")
+@Table(name = "users", check = @CheckConstraint(constraint = "TRIM(username) <> ''"))
 public class User {
 
     @Id

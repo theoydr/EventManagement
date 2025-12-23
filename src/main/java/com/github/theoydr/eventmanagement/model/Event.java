@@ -18,13 +18,12 @@ import java.util.UUID;
         // Adds a database-level constraint to prevent an organizer from creating duplicate events
         // based on the start time and location.
         @UniqueConstraint(columnNames = {"organizer_id", "start_date_time", "location"}, name = "unique_organizer_start_location")
-})
-@Checks({
-        @Check(constraints = "end_date_time > start_date_time", name = "event_dates_check"),
-        @Check(constraints = "capacity > 0", name = "event_capacity_check"),
-        @Check(constraints = "ticket_price >= 0", name = "event_ticket_price_check"),
-        @Check(constraints = "TRIM(title) <> ''", name = "event_title_not_blank_check"),
-        @Check(constraints = "TRIM(location) <> ''", name = "event_location_not_blank_check")
+}, check = {
+        @CheckConstraint(constraint = "end_date_time > start_date_time", name = "event_dates_check"),
+        @CheckConstraint(constraint = "capacity > 0", name = "event_capacity_check"),
+        @CheckConstraint(constraint = "ticket_price >= 0", name = "event_ticket_price_check"),
+        @CheckConstraint(constraint = "TRIM(title) <> ''", name = "event_title_not_blank_check"),
+        @CheckConstraint(constraint = "TRIM(location) <> ''", name = "event_location_not_blank_check")
 })
 public class Event {
 
