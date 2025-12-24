@@ -19,7 +19,7 @@ import java.util.List;
 @Tag(name = "Bookings API", description = "Endpoints for managing event bookings")
 public interface BookingApi {
 
-    @Operation(summary = "Create a new eventmanagement", description = "Creates a eventmanagement for a user for a specific event.")
+    @Operation(summary = "Create a new booking", description = "Creates a booking for a user for a specific event.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Booking created successfully",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BookingResponse.class))),
@@ -30,9 +30,9 @@ public interface BookingApi {
             @ApiResponse(responseCode = "409", description = "Booking failed due to a business rule (e.g., event sold out, user already booked)",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class)))
     })
-    ResponseEntity<BookingResponse> createBooking(@Parameter(description = "Details for the new eventmanagement", required = true) @RequestBody BookingRequest bookingRequest);
+    ResponseEntity<BookingResponse> createBooking(@Parameter(description = "Details for the new booking", required = true) @RequestBody BookingRequest bookingRequest);
 
-    @Operation(summary = "Cancel a eventmanagement", description = "Changes the status of a eventmanagement to CANCELLED.")
+    @Operation(summary = "Cancel a booking", description = "Changes the status of a booking to CANCELLED.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Booking cancelled successfully (No content)"),
             @ApiResponse(responseCode = "404", description = "Booking not found with the given ID",
@@ -40,14 +40,14 @@ public interface BookingApi {
     })
     ResponseEntity<Void> cancelBooking(@PathVariable Long id);
 
-    @Operation(summary = "Get a eventmanagement by its ID")
+    @Operation(summary = "Get a booking by its ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved the eventmanagement",
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the booking",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = BookingResponse.class))),
             @ApiResponse(responseCode = "404", description = "Booking not found with the given ID",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class)))
     })
-    ResponseEntity<BookingResponse> getBookingById(@Parameter(description = "The ID of the eventmanagement to retrieve", required = true) @PathVariable Long id);
+    ResponseEntity<BookingResponse> getBookingById(@Parameter(description = "The ID of the booking to retrieve", required = true) @PathVariable Long id);
 
     @Operation(summary = "Get all bookings for a specific event")
     @ApiResponses(value = {

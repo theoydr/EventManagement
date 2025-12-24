@@ -64,7 +64,7 @@ public final class MessageKeys {
         public static final String RESOURCE_NOT_FOUND = "{error.resource.notFound}";
         public static final String USER_EXISTS = "{error.user.exists}";
         public static final String EVENT_DUPLICATE = "{error.event.duplicate}";
-        public static final String BOOKING_FAILED = "{error.eventmanagement.failed}";
+        public static final String BOOKING_FAILED = "{error.booking.failed}";
         public static final String MESSAGE_NOT_FOUND = "{error.internal.messageNotFound}";
         public static final String UNEXPECTED_VALIDATION_EXCEPTION = "error.internal.unexpectedValidationException";
         public static final String UNEXPECTED = "error.internal.unexpected";

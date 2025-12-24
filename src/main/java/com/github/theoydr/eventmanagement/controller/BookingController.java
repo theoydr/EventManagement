@@ -39,7 +39,7 @@ public class BookingController implements BookingApi {
     @GetMapping("/{id}")
     public ResponseEntity<BookingResponse> getBookingById(@PathVariable Long id) {
         Booking booking = bookingService.findBookingById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("eventmanagement", "id", id));
+                .orElseThrow(() -> new ResourceNotFoundException("booking", "id", id));
         return ResponseEntity.ok(bookingMapper.toResponse(booking));
     }
 
