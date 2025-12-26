@@ -86,12 +86,11 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 
-        // --- THIS IS THE FIX ---
         // 1. Look up the raw template using only the key.
         String defaultMessageTemplate = messageSource.getMessage(key, null, Locale.ROOT);
         // 2. Manually interpolate the message with our named arguments.
         String defaultMessage = interpolateMessage(defaultMessageTemplate, constraintArguments, key);
-        return new ErrorDetail(key, defaultMessage, constraintArguments);
+        return new ErrorDetail(key, defaultMessage, constraintArguments.isEmpty() ? null : constraintArguments);
     }
 
 
@@ -212,8 +211,8 @@ public class GlobalExceptionHandler {
 
             String defaultMessageTemplate = messageSource.getMessage(key, null, Locale.ROOT);
             String defaultMessage = interpolateMessage(defaultMessageTemplate, arguments, key);
-
-            ErrorDetail errorDetail = new ErrorDetail(key, defaultMessage, arguments);
+            Map<String, Object> finalArgs = (arguments == null || arguments.isEmpty()) ? null : arguments;
+            ErrorDetail errorDetail = new ErrorDetail(key, defaultMessage, finalArgs);
             return ApiErrorResponse.forGeneralError(status, message, errorDetail);
         } catch (NoSuchMessageException nsmEx) {
             // The key for this business exception was not found in any property file.
