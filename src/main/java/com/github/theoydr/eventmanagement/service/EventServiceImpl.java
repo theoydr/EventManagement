@@ -3,7 +3,9 @@ package com.github.theoydr.eventmanagement.service;
 
 import com.github.theoydr.eventmanagement.dto.EventRequest;
 import com.github.theoydr.eventmanagement.enums.EventStatus;
+import com.github.theoydr.eventmanagement.enums.UserRole;
 import com.github.theoydr.eventmanagement.exception.DuplicateEventException;
+import com.github.theoydr.eventmanagement.exception.OperationNotAllowedException;
 import com.github.theoydr.eventmanagement.exception.ResourceNotFoundException;
 import com.github.theoydr.eventmanagement.mapper.EventMapper;
 import com.github.theoydr.eventmanagement.model.Event;
@@ -40,6 +42,13 @@ public class EventServiceImpl implements EventService {
 
         User organizer = userRepository.findById(eventRequest.organizerId())
                 .orElseThrow(() -> new ResourceNotFoundException("organizer", "organizerId", eventRequest.organizerId()));
+
+        if (organizer.getRole() != UserRole.ORGANIZER) {
+            log.warn("Event creation failed: User ID {} is not an ORGANIZER", organizer.getId());
+            // We reuse IllegalArgumentException for logical violations that don't fit other custom exceptions.
+            // This will result in a 500 via the global handler, or we could create a specialized 403 exception.
+            throw new OperationNotAllowedException("User must have the ORGANIZER role to create events.");
+        }
 
         if (eventRepository.existsByOrganizerAndStartDateTimeAndLocation(organizer, eventRequest.startDateTime(), eventRequest.location())) {
             throw new DuplicateEventException();
@@ -82,6 +91,36 @@ public class EventServiceImpl implements EventService {
         event.setStatus(EventStatus.CANCELLED);
         eventRepository.save(event);
         log.info("Event cancelled successfully with ID: {}", eventId);
+    }
+
+
+    @Override
+    public Event publishEvent(Long eventId, Long organizerId) {
+        log.debug("Attempting to publish event with ID: {}", eventId);
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event", "id", eventId));
+
+
+
+        if (!event.getOrganizer().getId().equals(organizerId)) {
+            log.warn("Publish failed: User ID {} tried to publish Event ID {} but is not the owner.", organizerId, eventId);
+            throw new OperationNotAllowedException("Only the event organizer can publish this event.");
+        }
+
+        if (event.getOrganizer().getRole() != UserRole.ORGANIZER) {
+            log.warn("Publish failed: Owner (ID {}) is no longer an ORGANIZER", event.getOrganizer().getId());
+            throw new OperationNotAllowedException("The event owner must have the ORGANIZER role to publish events.");
+        }
+
+        if (event.getStatus() != EventStatus.DRAFT) {
+            throw new OperationNotAllowedException("Cannot publish event. Current status is " + event.getStatus());
+        }
+
+
+        event.setStatus(EventStatus.PUBLISHED);
+        Event publishedEvent = eventRepository.save(event);
+        log.info("Event published successfully with ID: {}", eventId);
+        return publishedEvent;
     }
 
     @Override

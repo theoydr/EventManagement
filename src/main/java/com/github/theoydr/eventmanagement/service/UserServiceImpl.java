@@ -1,6 +1,8 @@
 package com.github.theoydr.eventmanagement.service;
 
 import com.github.theoydr.eventmanagement.dto.UserRegistrationRequest;
+import com.github.theoydr.eventmanagement.enums.UserRole;
+import com.github.theoydr.eventmanagement.exception.OperationNotAllowedException;
 import com.github.theoydr.eventmanagement.exception.UserAlreadyExistsException;
 import com.github.theoydr.eventmanagement.mapper.UserMapper;
 import com.github.theoydr.eventmanagement.model.User;
@@ -31,17 +33,21 @@ public class UserServiceImpl implements UserService {
     public User registerUser(UserRegistrationRequest registrationRequest) {
         log.debug("Attempting to register new user with email: {}", registrationRequest.email());
 
+        if (registrationRequest.role() == UserRole.ADMIN) {
+            log.warn("Security Alert: User attempted to register as ADMIN with email: {}", registrationRequest.email());
+
+            throw new OperationNotAllowedException("Registration not allowed for role: " + UserRole.ADMIN.name());
+        }
+
         userRepository.findByEmail(registrationRequest.email()).ifPresent(user -> {
             throw new UserAlreadyExistsException(registrationRequest.email());
         });
 
         User newUser = userMapper.toEntity(registrationRequest);
 
-        // --- SECURITY NOTE ---
-        // In a real application, we would hash the password here before saving.
-        // For example: newUser.setPassword(passwordEncoder.encode(registrationRequest.password()));
+
         User savedUser = userRepository.save(newUser);
-        log.info("New user registered successfully with ID: {}", savedUser.getId());
+        log.info("New user registered successfully with ID: {} and Role: {}", savedUser.getId(), savedUser.getRole());
         return savedUser;
     }
 

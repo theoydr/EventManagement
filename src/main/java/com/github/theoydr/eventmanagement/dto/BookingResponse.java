@@ -15,5 +15,5 @@ public record BookingResponse(
         LocalDateTime bookingDateTime,
         BookingStatus status,
         EventResponse event,
-        UserResponse user
+        AttendeeResponse user
 ) {}

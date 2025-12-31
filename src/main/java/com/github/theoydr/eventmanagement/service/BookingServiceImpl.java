@@ -45,7 +45,13 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new ResourceNotFoundException("user", "id", userId));
 
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new  ResourceNotFoundException("event", "id", eventId));
+                .orElseThrow(() -> new ResourceNotFoundException("event", "id", eventId));
+
+
+        if (event.getOrganizer().getId().equals(user.getId())) {
+            log.warn("Booking failed: Organizer (User ID {}) tried to book their own Event (ID {})", userId, eventId);
+            throw new EventBookingException(BookingFailureReason.CANNOT_BOOK_OWN_EVENT, "Organizers cannot book tickets for their own events.");
+        }
 
         if (bookingRepository.existsByUserAndEvent(user, event)) {
             throw new EventBookingException(BookingFailureReason.USER_ALREADY_BOOKED, "You have already booked this event.");

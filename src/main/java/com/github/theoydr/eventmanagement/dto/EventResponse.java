@@ -19,5 +19,5 @@ public record EventResponse(
         Double ticketPrice,
         EventCategory category,
         EventStatus status,
-        UserResponse organizer
+        OrganizerResponse organizer
 ) {}

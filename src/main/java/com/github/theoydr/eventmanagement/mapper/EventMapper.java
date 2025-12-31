@@ -2,6 +2,7 @@ package com.github.theoydr.eventmanagement.mapper;
 
 import com.github.theoydr.eventmanagement.dto.EventRequest;
 import com.github.theoydr.eventmanagement.dto.EventResponse;
+import com.github.theoydr.eventmanagement.dto.OrganizerResponse;
 import com.github.theoydr.eventmanagement.model.Event;
 import org.springframework.stereotype.Component;
 
@@ -9,10 +10,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventMapper {
 
-    private final UserMapper userMapper;
 
-    public EventMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
+
+    public EventMapper() {
+
     }
 
     public Event toEntity(EventRequest request) {
@@ -29,6 +30,11 @@ public class EventMapper {
     }
 
     public EventResponse toResponse(Event event) {
+
+        OrganizerResponse organizerResponse = new OrganizerResponse(
+                event.getOrganizer().getId(),
+                event.getOrganizer().getUsername()
+        );
         return new EventResponse(
                 event.getId(),
                 event.getTitle(),
@@ -40,7 +46,7 @@ public class EventMapper {
                 event.getTicketPrice(),
                 event.getCategory(),
                 event.getStatus(),
-                userMapper.toResponse(event.getOrganizer())
+                organizerResponse
         );
     }
 }

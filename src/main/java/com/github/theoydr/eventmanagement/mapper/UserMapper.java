@@ -2,6 +2,7 @@ package com.github.theoydr.eventmanagement.mapper;
 
 import com.github.theoydr.eventmanagement.dto.UserRegistrationRequest;
 import com.github.theoydr.eventmanagement.dto.UserResponse;
+import com.github.theoydr.eventmanagement.enums.UserRole;
 import com.github.theoydr.eventmanagement.model.User;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,12 @@ public class UserMapper {
         User user = new User();
         user.setUsername(request.username());
         user.setEmail(request.email());
-        user.setPassword(request.password()); // Password will be hashed by the service
+        user.setPassword(request.password());
+        if (request.role() != null) {
+            user.setRole(request.role());
+        } else {
+            user.setRole(UserRole.USER);
+        }
         return user;
     }
 

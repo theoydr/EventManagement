@@ -2,6 +2,7 @@ package com.github.theoydr.eventmanagement.service;
 
 import com.github.theoydr.eventmanagement.dto.EventRequest;
 import com.github.theoydr.eventmanagement.exception.DuplicateEventException;
+import com.github.theoydr.eventmanagement.exception.OperationNotAllowedException;
 import com.github.theoydr.eventmanagement.exception.ResourceNotFoundException;
 import com.github.theoydr.eventmanagement.model.Event;
 
@@ -45,6 +46,16 @@ public interface EventService {
      */
     void cancelEvent(Long eventId);
 
+    /**
+     * Publishes a DRAFT event, making it available for bookings.
+     *
+     * @param eventId The ID of the event to publish.
+     * @param organizerId The ID of the user attempting to publish the event.
+     * @return The updated Event entity.
+     * @throws ResourceNotFoundException if no event is found with the given ID.
+     * @throws OperationNotAllowedException if the event is not in DRAFT status.
+     */
+    Event publishEvent(Long eventId, Long organizerId);
 
     /**
      * Finds an event by its unique ID.

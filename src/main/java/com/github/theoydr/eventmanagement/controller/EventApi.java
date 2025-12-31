@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public interface EventApi {
             @ApiResponse(responseCode = "201", description = "Event created successfully",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = EventResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input data provided",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class))),
+            @ApiResponse(responseCode = "403", description = "Operation not allowed (e.g. role is not ORGANISER)",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "Organizer not found with the provided ID",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class))),
@@ -65,6 +68,18 @@ public interface EventApi {
     })
     ResponseEntity<Void> cancelEvent(@Parameter(description = "The ID of the event to cancel", required = true) @PathVariable Long id);
 
+
+    @Operation(summary = "Publish an event", description = "Changes the status of a DRAFT event to PUBLISHED, making it available for booking.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Event published successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EventResponse.class))),
+            @ApiResponse(responseCode = "403", description = "Operation not allowed (e.g., Event is not in DRAFT status, role is not ORGANISER)",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Event not found with the given ID",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class)))
+    })
+    ResponseEntity<EventResponse> publishEvent(@Parameter(description = "The ID of the event to publish", required = true) @PathVariable Long id,
+                                               @Parameter(description = "The ID of the organizer publishing the event", required = true) @RequestParam Long organizerId);
 
     @Operation(summary = "Get all published events", description = "Retrieves a list of all events with status PUBLISHED.")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of published events")

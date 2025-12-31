@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -173,6 +174,14 @@ public class GlobalExceptionHandler {
 
     }
 
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrorResponse handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        log.warn("JSON parsing failed: {}", ex.getMessage());
+        return buildGeneralErrorResponse(null, MessageKeys.Error.INVALID_FORMAT, HttpStatus.BAD_REQUEST, "Malformed JSON request or invalid data format.");
+    }
+
     /**
      * Handles business logic errors related to event bookings (e.g., booking a full event).
      *
@@ -180,9 +189,9 @@ public class GlobalExceptionHandler {
      * @return A ResponseEntity with a 400 Bad Request status and a clear error message.
      */
     @ExceptionHandler(EventBookingException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ApiErrorResponse handleEventBookingException(EventBookingException ex) {
-        return buildGeneralErrorResponse(ex.getArguments(), MessageKeys.Error.BOOKING_FAILED, HttpStatus.BAD_REQUEST, "Booking failed");
+        return buildGeneralErrorResponse(ex.getArguments(), MessageKeys.Error.BOOKING_FAILED, HttpStatus.CONFLICT, "Booking failed");
 
     }
 
@@ -191,6 +200,14 @@ public class GlobalExceptionHandler {
     public ApiErrorResponse handleDuplicateEventException(DuplicateEventException ex) {
         return buildGeneralErrorResponse(ex.getArguments(), MessageKeys.Error.EVENT_DUPLICATE, HttpStatus.CONFLICT, "Duplicate event detected");
 
+    }
+
+
+
+    @ExceptionHandler(OperationNotAllowedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiErrorResponse handleOperationNotAllowedException(OperationNotAllowedException ex) {
+        return buildGeneralErrorResponse(ex.getArguments(), MessageKeys.Error.OPERATION_NOT_ALLOWED, HttpStatus.FORBIDDEN, "Operation not allowed");
     }
 
 

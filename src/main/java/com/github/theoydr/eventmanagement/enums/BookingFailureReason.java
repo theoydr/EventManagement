@@ -13,5 +13,8 @@ public enum BookingFailureReason {
     /** The user has already made a booking for this event. */
     USER_ALREADY_BOOKED,
 
+    /** The user is the organizer of the event and cannot book tickets for it. */
+    CANNOT_BOOK_OWN_EVENT
+
 
 }

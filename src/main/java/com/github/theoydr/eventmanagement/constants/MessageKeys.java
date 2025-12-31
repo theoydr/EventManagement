@@ -52,12 +52,7 @@ public final class MessageKeys {
         public static final String BOOKING_NOT_FUTURE = "{booking.validation.bookingDate.notFuture}";
     }
 
-    public static final class CommonMessages {
-        private CommonMessages() {}
-        public static final String REQUIRED = "{common.validation.required}";
-        public static final String INVALID_FORMAT = "{common.validation.invalid.format}";
-        public static final String VALIDATION_FAILED = "{common.validation.failed}";
-    }
+
 
     public static final class Error {
         private Error() {}
@@ -69,7 +64,8 @@ public final class MessageKeys {
         public static final String UNEXPECTED_VALIDATION_EXCEPTION = "error.internal.unexpectedValidationException";
         public static final String UNEXPECTED = "error.internal.unexpected";
         public static final String ENDPOINT_NOT_FOUND = "{error.endpoint.notFound}";
-
+        public static final String INVALID_FORMAT = "{error.validation.invalid.format}";
+        public static final String OPERATION_NOT_ALLOWED = "error.operation.notAllowed";
 
     }
 }

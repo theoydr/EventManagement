@@ -2,6 +2,7 @@ package com.github.theoydr.eventmanagement.dto;
 
 
 import com.github.theoydr.eventmanagement.constants.MessageKeys;
+import com.github.theoydr.eventmanagement.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -21,5 +22,7 @@ public record UserRegistrationRequest(
 
         @NotBlank(message = MessageKeys.UserMessages.PASSWORD_NOT_BLANK)
         @Size(min = 8, max=16, message = MessageKeys.UserMessages.PASSWORD_SIZE)
-        String password
+        String password,
+
+        UserRole role
 ) {}

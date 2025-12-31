@@ -26,12 +26,15 @@ public class EventController implements EventApi {
         this.eventMapper = eventMapper;
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<EventResponse> createEvent(@Valid @RequestBody EventRequest eventRequest) {
         Event createdEvent = eventService.createEvent(eventRequest);
         return new ResponseEntity<>(eventMapper.toResponse(createdEvent), HttpStatus.CREATED);
     }
 
+
+    @Override
     @GetMapping
     public List<EventResponse> getAllEvents() {
         return eventService.findAllEvents().stream()
@@ -39,6 +42,8 @@ public class EventController implements EventApi {
                 .collect(Collectors.toList());
     }
 
+
+    @Override
     @GetMapping("/published")
     public List<EventResponse> getPublishedEvents() {
         return eventService.findPublishedEvents().stream()
@@ -46,6 +51,7 @@ public class EventController implements EventApi {
                 .collect(Collectors.toList());
     }
 
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<EventResponse> getEventById(@PathVariable Long id) {
         Event event = eventService.findEventById(id)
@@ -53,16 +59,24 @@ public class EventController implements EventApi {
         return ResponseEntity.ok(eventMapper.toResponse(event));
     }
 
-
+    @Override
     @PutMapping("/{id}")
     public ResponseEntity<EventResponse> updateEvent(@PathVariable Long id, @Valid @RequestBody EventRequest eventRequest) {
         Event updatedEvent = eventService.updateEvent(id, eventRequest);
         return ResponseEntity.ok(eventMapper.toResponse(updatedEvent));
     }
 
+    @Override
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<Void> cancelEvent(@PathVariable Long id) {
         eventService.cancelEvent(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @PutMapping("/{id}/publish")
+    public ResponseEntity<EventResponse> publishEvent(@PathVariable Long id, @RequestParam Long organizerId) {
+        Event publishedEvent = eventService.publishEvent(id, organizerId);
+        return ResponseEntity.ok(eventMapper.toResponse(publishedEvent));
     }
 }
