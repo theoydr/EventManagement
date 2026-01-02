@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+import tools.jackson.databind.DatabindException;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -179,7 +181,19 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrorResponse handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         log.warn("JSON parsing failed: {}", ex.getMessage());
-        return buildGeneralErrorResponse(null, MessageKeys.Error.INVALID_FORMAT, HttpStatus.BAD_REQUEST, "Malformed JSON request or invalid data format.");
+        Map<String, Object> args = new HashMap<>();
+
+        if (ex.getCause() instanceof DatabindException dte) {
+            String fieldName = dte.getPath().stream()
+                    .map(DatabindException.Reference::getPropertyName)
+                    .collect(Collectors.joining("."));
+
+            if (!fieldName.isEmpty()) {
+                args.put("field", fieldName);
+            }
+
+        }
+        return buildGeneralErrorResponse(args, MessageKeys.Error.INVALID_FORMAT, HttpStatus.BAD_REQUEST, "Malformed JSON request or invalid data format.");
     }
 
     /**
