@@ -45,8 +45,6 @@ public class EventServiceImpl implements EventService {
 
         if (organizer.getRole() != UserRole.ORGANIZER) {
             log.warn("Event creation failed: User ID {} is not an ORGANIZER", organizer.getId());
-            // We reuse IllegalArgumentException for logical violations that don't fit other custom exceptions.
-            // This will result in a 500 via the global handler, or we could create a specialized 403 exception.
             throw new OperationNotAllowedException("User must have the ORGANIZER role to create events.");
         }
 
@@ -88,6 +86,10 @@ public class EventServiceImpl implements EventService {
         log.debug("Attempting to cancel event with ID: {}", eventId);
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("event", "id", eventId));
+
+        if (event.getStatus() == EventStatus.CANCELLED) {
+            throw new OperationNotAllowedException("Event is already cancelled.");
+        }
         event.setStatus(EventStatus.CANCELLED);
         eventRepository.save(event);
         log.info("Event cancelled successfully with ID: {}", eventId);

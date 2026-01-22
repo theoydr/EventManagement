@@ -20,10 +20,6 @@ public class ResourceNotFoundException extends RuntimeException implements Struc
         this.identifierValue = identifierValue;
     }
 
-    /**
-     * Returns the structured error arguments for building a detailed API error response.
-     * @return A map of the error details.
-     */
     @Override
     public Map<String, Object> getArguments() {
         return Map.of(

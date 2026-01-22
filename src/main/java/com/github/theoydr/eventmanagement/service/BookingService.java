@@ -1,6 +1,7 @@
 package com.github.theoydr.eventmanagement.service;
 
 import com.github.theoydr.eventmanagement.exception.EventBookingException;
+import com.github.theoydr.eventmanagement.exception.OperationNotAllowedException;
 import com.github.theoydr.eventmanagement.exception.ResourceNotFoundException;
 import com.github.theoydr.eventmanagement.model.Booking;
 
@@ -34,6 +35,7 @@ public interface BookingService {
      *
      * @param bookingId The ID of the booking to cancel.
      * @throws ResourceNotFoundException if no booking is found with the given ID.
+     * @throws OperationNotAllowedException if booking is already cancelled.
      */
     void cancelBooking(Long bookingId);
 

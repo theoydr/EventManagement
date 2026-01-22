@@ -60,9 +60,9 @@ public final class MessageKeys {
         public static final String USER_EXISTS = "{error.user.exists}";
         public static final String EVENT_DUPLICATE = "{error.event.duplicate}";
         public static final String BOOKING_FAILED = "{error.booking.failed}";
-        public static final String MESSAGE_NOT_FOUND = "{error.internal.messageNotFound}";
         public static final String UNEXPECTED_VALIDATION_EXCEPTION = "error.internal.unexpectedValidationException";
         public static final String UNEXPECTED = "error.internal.unexpected";
+        public static final String BAD_REQUEST = "error.client.badRequest";
         public static final String ENDPOINT_NOT_FOUND = "{error.endpoint.notFound}";
         public static final String INVALID_FORMAT = "{error.validation.invalid.format}";
         public static final String OPERATION_NOT_ALLOWED = "error.operation.notAllowed";

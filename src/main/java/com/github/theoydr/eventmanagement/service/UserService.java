@@ -1,6 +1,7 @@
 package com.github.theoydr.eventmanagement.service;
 
 import com.github.theoydr.eventmanagement.dto.UserRegistrationRequest;
+import com.github.theoydr.eventmanagement.exception.OperationNotAllowedException;
 import com.github.theoydr.eventmanagement.exception.UserAlreadyExistsException;
 import com.github.theoydr.eventmanagement.model.User;
 
@@ -19,8 +20,10 @@ public interface UserService {
      *
      * @param registrationRequest DTO containing the new user's details.
      * @return The newly created and persisted User entity.
+     * @throws OperationNotAllowedException if a forbidden role tries to register.
      * @throws UserAlreadyExistsException if a user with the same email already exists.
      */
+
     User registerUser(UserRegistrationRequest registrationRequest);
 
 

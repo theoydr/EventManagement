@@ -9,6 +9,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -40,7 +41,9 @@ public class MessageSourceConfig {
         String[] baseNames = Stream.of(resources)
                 .map(this::resourceToBasename)
                 .distinct()
+                .filter(Objects::nonNull)
                 .toArray(String[]::new);
+
 
         messageSource.setBasenames(baseNames);
         return messageSource;
@@ -61,7 +64,12 @@ public class MessageSourceConfig {
             int messagesIndex = path.lastIndexOf("/messages");
 
             // Return the path up to and including the base name 'messages'
+            if (messagesIndex == -1) {
+                return null;
+            }
+
             return "classpath:" + path.substring(path.indexOf("messages/"), messagesIndex + "/messages".length());
+
 
 
         } catch (IOException e) {

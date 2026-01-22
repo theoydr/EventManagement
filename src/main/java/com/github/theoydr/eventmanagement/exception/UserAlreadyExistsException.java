@@ -12,10 +12,7 @@ public class UserAlreadyExistsException extends RuntimeException implements Stru
         this.email = email;
     }
 
-    /**
-     * Returns the structured error arguments for building a detailed API error response.
-     * @return A map of the error details.
-     */
+
     @Override
     public Map<String, Object> getArguments() {
         return Map.of("email", email);

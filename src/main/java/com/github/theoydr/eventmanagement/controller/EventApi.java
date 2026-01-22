@@ -63,6 +63,8 @@ public interface EventApi {
     @Operation(summary = "Cancel an event", description = "Changes the status of an event to CANCELLED.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Event cancelled successfully (No content)"),
+            @ApiResponse(responseCode = "403", description = "Operation not allowed (e.g. event is already CANCELLED)",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "Event not found with the given ID",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class)))
     })

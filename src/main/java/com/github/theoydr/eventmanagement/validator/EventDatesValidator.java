@@ -6,9 +6,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class EventDatesValidator implements ConstraintValidator<ValidEventDates, EventRequest> {
 
-    @Override
-    public void initialize(ValidEventDates constraintAnnotation) {
-    }
+
 
     @Override
     public boolean isValid(EventRequest eventRequest, ConstraintValidatorContext context) {

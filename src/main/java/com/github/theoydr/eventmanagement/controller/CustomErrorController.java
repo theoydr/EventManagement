@@ -79,8 +79,16 @@ public class CustomErrorController implements ErrorController {
     }
 
     private String resolveErrorKey(HttpStatus status) {
-        return (status == HttpStatus.NOT_FOUND) ? MessageKeys.Error.ENDPOINT_NOT_FOUND : MessageKeys.Error.UNEXPECTED;
+        if (status == HttpStatus.NOT_FOUND) {
+            return MessageKeys.Error.ENDPOINT_NOT_FOUND;
+        }
+        if (status.is4xxClientError()) {
+            return MessageKeys.Error.BAD_REQUEST;
+        }
+        return MessageKeys.Error.UNEXPECTED;
     }
+
+
 
     private String resolveErrorMessage(HttpStatus status, Map<String, Object> attributes) {
         if (status == HttpStatus.NOT_FOUND) {
@@ -115,11 +123,16 @@ public class CustomErrorController implements ErrorController {
 
     private ResponseEntity<ApiErrorResponse> handleSafetyNetError(Exception e) {
         log.error("CRITICAL: CustomErrorController failed to process the error response.", e);
+        ErrorDetail fatalError = new ErrorDetail(
+                MessageKeys.Error.UNEXPECTED,
+                "Critical system failure",
+                null
+        );
         return new ResponseEntity<>(
                 ApiErrorResponse.forGeneralError(
                         HttpStatus.INTERNAL_SERVER_ERROR,
                         "Critical system failure during error handling",
-                        null
+                        fatalError
                 ),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );

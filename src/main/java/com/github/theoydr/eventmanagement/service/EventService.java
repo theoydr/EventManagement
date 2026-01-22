@@ -23,6 +23,7 @@ public interface EventService {
      * @return The newly created and persisted Event entity.
      * @throws ResourceNotFoundException if the specified organizer is not found.
      * @throws DuplicateEventException if a similar event already exists.
+     * @throws OperationNotAllowedException if role is not an ORGANIZER.
      */
     Event createEvent(EventRequest eventRequest);
 
@@ -43,6 +44,8 @@ public interface EventService {
      *
      * @param eventId The ID of the event to cancel.
      * @throws ResourceNotFoundException if no event is found with the given ID.
+     * @throws OperationNotAllowedException if the event is already cancelled.
+
      */
     void cancelEvent(Long eventId);
 

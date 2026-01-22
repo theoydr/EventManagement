@@ -35,6 +35,8 @@ public interface BookingApi {
     @Operation(summary = "Cancel a booking", description = "Changes the status of a booking to CANCELLED.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Booking cancelled successfully (No content)"),
+            @ApiResponse(responseCode = "403", description = "Operation not allowed (e.g. booking is already CANCELLED)",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "Booking not found with the given ID",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class)))
     })

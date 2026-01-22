@@ -8,7 +8,7 @@ import java.util.Map;
  * Custom exception for errors related to event logic, such as an event being full,
  * already cancelled, or not in a state that allows a specific action.
  *
- * Responds with HTTP 400 Bad Request.
+ * Responds with HTTP 409 Conflict.
  */
 public class EventBookingException extends RuntimeException implements StructuredError{
 

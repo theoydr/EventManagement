@@ -12,10 +12,6 @@ public class EventMapper {
 
 
 
-    public EventMapper() {
-
-    }
-
     public Event toEntity(EventRequest request) {
         Event event = new Event();
         event.setTitle(request.title());

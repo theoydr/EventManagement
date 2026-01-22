@@ -4,6 +4,7 @@ import com.github.theoydr.eventmanagement.enums.BookingFailureReason;
 import com.github.theoydr.eventmanagement.enums.BookingStatus;
 import com.github.theoydr.eventmanagement.enums.EventStatus;
 import com.github.theoydr.eventmanagement.exception.EventBookingException;
+import com.github.theoydr.eventmanagement.exception.OperationNotAllowedException;
 import com.github.theoydr.eventmanagement.exception.ResourceNotFoundException;
 import com.github.theoydr.eventmanagement.model.Booking;
 import com.github.theoydr.eventmanagement.model.Event;
@@ -90,6 +91,9 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new ResourceNotFoundException("booking", "id", bookingId));
 
+        if (booking.getStatus() == BookingStatus.CANCELLED) {
+            throw new OperationNotAllowedException("Booking is already cancelled.");
+        }
         booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
         log.info("Booking cancelled successfully with ID: {}", bookingId);
