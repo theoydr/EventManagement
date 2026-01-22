@@ -1,6 +1,6 @@
 # **Event and Booking Management System**
 
-A robust REST API for managing events, user registrations, and bookings, built with Java 21 and Spring Boot 3\.
+A robust REST API for managing events, user registrations, and bookings, built with Java 25 and Spring Boot 4\.
 
 ## **Features**
 
